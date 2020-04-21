@@ -32,8 +32,22 @@ _*.py -> files we shouldn't use for maintain
 
 prefix = "r->" 
 
+client = discord.Client()
 bot = commands.Bot(command_prefix=prefix)
 
+# client stuff
+@client.event
+async def on_ready():
+  print("i've logged in as {0.user}".format(client))
+
+@client.event
+async def on_message(message):
+  if message.author == client.user:
+    return
+  if message.content.startswith("sa"):
+    await message.channel.send("as")
+
+# bot stuff
 @bot.command()
 async def commands(ctx):
   await ctx.send("prefix = r->[command]\n \
@@ -52,5 +66,15 @@ async def os(ctx):
 @bot.command()
 async def token(ctx):
   await ctx.send("your token is: " + __token.token)
+
+@bot.command()
+async def testimg(channel, number):
+  #my_files = [
+  #  discord.File("img/test1.png", "img/test1.png"),
+  #  discord.File("img/test2.png", "img/test2.png"),
+  #]
+  #await channel.send("your images are: ", files=my_files) 
+  test_file = discord.File("img/test" + number + ".png")
+  await channel.send("your file is: ", file=test_file)
 
 bot.run(__token.token)
