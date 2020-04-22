@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 import discord
 from discord.ext import commands
-import __token # you need to have __token.token variable
-import sys
+from __token import token # __token.py - token variable
+import __user_info as user_info # __user_info.py - any username variable
+import sys, os
 
 '''
 peper the helper
@@ -30,51 +31,71 @@ _*.py -> files we shouldn't use for maintain
 	there is no any wrong with using them
 '''
 
-prefix = "r->" 
-
-client = discord.Client()
+app_id = "peper"
+app_title = "Peper the Helper"
+prefix = "r->"
 bot = commands.Bot(command_prefix=prefix)
 
-# client stuff
-@client.event
-async def on_ready():
-  print("i've logged in as {0.user}".format(client))
+def print_b_text(message):
+  print("\n\t", end="")
+  for letter in str(message):
+    print("#", end="")
+  print("\n", end="")
+  print("\t" + message)
+  print("\t", end="")
+  for letter in str(message):
+    print("#", end="")
+  print("\n")
 
-@client.event
-async def on_message(message):
-  if message.author == client.user:
-    return
-  if message.content.startswith("sa"):
-    await message.channel.send("as")
+def print_m_text(message):
+  print("\n\t>> " + message + "\n")
 
-# bot stuff
-@bot.command()
-async def commands(ctx):
-  await ctx.send("prefix = r->[command]\n \
-		  ping\n \
-		  os\n \
-		  token\n")
+class MainApplication:
 
-@bot.command()
-async def ping(ctx):
-  await ctx.send("pong")
+  ###################
+  #   bot command
+  ###################
+  # !!!!!!!!!!!!!!!!
+  # commands're not
+  # working properly
 
-@bot.command()
-async def os(ctx):
-  await ctx.send("server os: " + sys.platform)
+  @bot.command()
+  async def testlol(cxt): 
+    await ctx.send("lol msg")
 
-@bot.command()
-async def token(ctx):
-  await ctx.send("your token is: " + __token.token)
+  ###################
+  #   bot event 
+  ###################
 
-@bot.command()
-async def testimg(channel, number):
-  #my_files = [
-  #  discord.File("img/test1.png", "img/test1.png"),
-  #  discord.File("img/test2.png", "img/test2.png"),
-  #]
-  #await channel.send("your images are: ", files=my_files) 
-  test_file = discord.File("img/test" + number + ".png")
-  await channel.send("your file is: ", file=test_file)
+  @bot.event
+  async def on_connect():
+    print_b_text(app_title + " is connecting.")
 
-bot.run(__token.token)
+  @bot.event
+  async def on_disconnect():
+    print_b_text(app_title + " is disconnecting.")
+
+  @bot.event
+  async def on_ready():
+    print_b_text(app_title + " is ready. Logged in as: " + bot.user.name)
+
+  @bot.event
+  async def on_message(message):
+    if message.content.startswith(prefix):
+      if message.content.endswith("help"): await message.channel.send("later")
+      if message.content.endswith("platform"): await message.channel.send(sys.platform)
+      else: await message.channel.send("wtf is that command")
+    else:
+      print_m_text("(msg) [" + str(message.author) + "]: " + str(message.content))
+
+  @bot.event
+  async def on_typing(channel, user, when):
+    print_m_text("somebody is typing")
+
+  def main(self):
+    bot.run(token)
+
+if __name__ == "__main__" and \
+  sys.platform == "linux":
+    main_app = MainApplication()
+    main_app.main()
