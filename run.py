@@ -55,13 +55,14 @@ class MainApplication:
   ###################
   #   bot command
   ###################
-  # !!!!!!!!!!!!!!!!
-  # commands're not
-  # working properly
 
   @bot.command()
-  async def testlol(cxt): 
-    await ctx.send("lol msg")
+  async def clear(ctx, amount:int=5):
+    await ctx.channel.purge(limit=amount)
+
+  @bot.command()
+  async def test(ctx):
+    await ctx.send("test message")
 
   ###################
   #   bot event 
@@ -78,19 +79,15 @@ class MainApplication:
   @bot.event
   async def on_ready():
     print_b_text(app_title + " is ready. Logged in as: " + bot.user.name)
-
+  ''' 
   @bot.event
   async def on_message(message):
-    if message.content.startswith(prefix):
-      if message.content.endswith("help"): await message.channel.send("later")
-      if message.content.endswith("platform"): await message.channel.send(sys.platform)
-      else: await message.channel.send("wtf is that command")
-    else:
-      print_m_text("(msg) [" + str(message.author) + "]: " + str(message.content))
-
+    return
+   
   @bot.event
   async def on_typing(channel, user, when):
-    print_m_text("somebody is typing")
+    return
+  '''
 
   def main(self):
     bot.run(token)
