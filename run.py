@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 import discord
 from discord.ext import commands
+from __custom import * # __custom.py - CustomApplication() classname
 from __token import token # __token.py - token variable
-import __user_info as user_info # __user_info.py - any username variable
+from __user_info import user_info # __user_info.py - user_info dictionary
 import sys, os
 
 '''
@@ -31,66 +32,79 @@ _*.py -> files we shouldn't use for maintain
 	there is no any wrong with using them
 '''
 
-app_id = "peper"
-app_title = "Peper the Helper"
-prefix = "r->"
-bot = commands.Bot(command_prefix=prefix)
+class BaseApplication:
+  app_id = "peper"
+  app_title = "Peper the Helper"
+  prefix = "r->"
+  bot = commands.Bot(command_prefix=prefix)
 
-def print_b_text(message):
-  print("\n\t", end="")
-  for letter in str(message):
-    print("#", end="")
-  print("\n", end="")
-  print("\t" + message)
-  print("\t", end="")
-  for letter in str(message):
-    print("#", end="")
-  print("\n")
+  def print_b_text(message):
+    print("\n\t", end="")
+    for letter in str(message):
+      print("#", end="")
+    print("\n", end="")
+    print("\t" + message)
+    print("\t", end="")
+    for letter in str(message):
+      print("#", end="")
+    print("\n")
 
-def print_m_text(message):
-  print("\n\t>> " + message + "\n")
+  def print_m_text(message):
+    print("\n\t>> " + message + "\n")
 
-class MainApplication:
+class MainApplication(BaseApplication):
 
   ###################
   #   bot command
   ###################
 
-  @bot.command()
+  @BaseApplication.bot.command()
   async def clear(ctx, amount:int=5):
     await ctx.channel.purge(limit=amount)
 
-  @bot.command()
-  async def test(ctx):
-    await ctx.send("test message")
+  @BaseApplication.bot.command()
+  async def ping(ctx):
+    await ctx.send("pong")
+
+  @BaseApplication.bot.command()
+  async def info(ctx, user):
+    if user in user_info:
+      await ctx.send(user + ": " + user_info[user])
+    else:
+      await ctx.send("who tf is this?")
 
   ###################
   #   bot event 
   ###################
 
-  @bot.event
+  @BaseApplication.bot.event
   async def on_connect():
-    print_b_text(app_title + " is connecting.")
+    BaseApplication.print_b_text(BaseApplication.app_title + " is connecting.")
 
-  @bot.event
+  @BaseApplication.bot.event
   async def on_disconnect():
-    print_b_text(app_title + " is disconnecting.")
+    BaseApplication.print_b_text(BaseApplication.app_title + " is disconnecting.")
 
-  @bot.event
+  @BaseApplication.bot.event
   async def on_ready():
-    print_b_text(app_title + " is ready. Logged in as: " + bot.user.name)
-  ''' 
-  @bot.event
-  async def on_message(message):
-    return
-   
-  @bot.event
-  async def on_typing(channel, user, when):
-    return
-  '''
+    BaseApplication.print_b_text(BaseApplication.app_title + " is ready. Logged in as: " + BaseApplication.bot.user.name)
 
   def main(self):
-    bot.run(token)
+    BaseApplication.bot.run(token)
+
+'''
+if you want to default functions
+use MainApplication() class
+
+but if you want to use a custom
+version and use functions you
+wrote then use CustomApplication()
+class and write your functions
+(events or commands) in __custom.py
+and of course don't forget to
+from __custom import *
+and using CustomApplication() classname
+'''
 
 if __name__ == "__main__" and \
   sys.platform == "linux":
