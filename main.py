@@ -73,6 +73,10 @@ class MainApplication(BaseApplication):
     else:
       await ctx.send("who tf is this?")
 
+  @BaseApplication.bot.command()
+  async def platform(ctx): 
+    await ctx.send("platform: " + sys.platform)
+
   ###################
   #   bot event 
   ###################
