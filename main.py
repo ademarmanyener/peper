@@ -35,6 +35,7 @@ _*.py -> files we shouldn't use for maintain
 class BaseApplication:
   app_id = "peper"
   app_title = "Peper the Helper"
+  app_version = "DEFAULT"
   prefix = "." + "PPR" + " RUNX _> "
   bot = commands.Bot(command_prefix=prefix)
 
@@ -61,9 +62,15 @@ class MainApplication(BaseApplication):
   ###################
 
   @BaseApplication.bot.command()
+  async def VER(ctx):
+    ctx.channel.send(BaseApplication.app_version)
+    return
+
+  @BaseApplication.bot.command()
   async def PUT(ctx, msg:str="<Null>"):
-    await ctx.channel.purge(limit=2)
+    await ctx.channel.purge(limit=1)
     await ctx.channel.send(msg)
+    return
 
   @BaseApplication.bot.command()
   async def WHO(ctx):
@@ -123,7 +130,7 @@ class MainApplication(BaseApplication):
 
   @BaseApplication.bot.event
   async def on_connect():
-    BaseApplication.print_b_text(BaseApplication.app_title + " is connecting.")
+    BaseApplication.print_b_text(BaseApplication.app_title + " [" + BaseApplicaton.app_version + "] is connecting. ")
     return
 
   @BaseApplication.bot.event
@@ -135,10 +142,6 @@ class MainApplication(BaseApplication):
   async def on_ready():
     BaseApplication.print_b_text(BaseApplication.app_title + " is ready. Logged in as: " + BaseApplication.bot.user.name)
     return
-
-  @BaseApplication.bot.event
-  async def on_error(self, ctx, *args, **kwargs):
-    await ctx.channel.send("hey yo! wtf is that command nigger")
 
   def main(self):
     BaseApplication.bot.run(token)

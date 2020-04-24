@@ -18,7 +18,7 @@ class DevBuild:
       os.system(install_discordpy)
     else:
       check = input("do you want me to create a virtualenv? ")
-      if check.lower == "y" or check.lower == "yes":
+      if check.lower() == "y" or check.lower() == "yes":
         os.system("virtualenv venv")
         os.system("source ./venv/bin/activate")
         os.system(install_discordpy)
