@@ -2,6 +2,11 @@ Peper the Helper!
 =================
 this is a discord
 bot built for he-
-ping you.
+lping you.
 yet it's not that
 developed.
+
+install
+=======
+./setup-for-dev.py
+./install.sh
