@@ -63,7 +63,7 @@ class MainApplication(BaseApplication):
 
   @BaseApplication.bot.command()
   async def VER(ctx):
-    ctx.channel.send(app_version)
+    ctx.channel.send(BaseApplication.app_version)
     return
 
   @BaseApplication.bot.command()
@@ -134,7 +134,7 @@ class MainApplication(BaseApplication):
     return
 
   @BaseApplication.bot.event
-  async def on_disconnct():
+  async def on_disconnect():
     BaseApplication.print_b_text(BaseApplication.app_title + " is disconnecting.")
     return
 
@@ -163,5 +163,5 @@ and using CustomApplication() classname
 
 if __name__ == "__main__" and \
   sys.platform == "linux":
-    main_app = MainApplication()
+    main_app = CustomApplication()
     main_app.main()
