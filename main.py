@@ -63,7 +63,7 @@ class MainApplication(BaseApplication):
 
   @BaseApplication.bot.command()
   async def VER(ctx):
-    ctx.channel.send(BaseApplication.app_version)
+    ctx.channel.send(app_version)
     return
 
   @BaseApplication.bot.command()
@@ -130,11 +130,11 @@ class MainApplication(BaseApplication):
 
   @BaseApplication.bot.event
   async def on_connect():
-    BaseApplication.print_b_text(BaseApplication.app_title + " [" + BaseApplicaton.app_version + "] is connecting. ")
+    BaseApplication.print_b_text(BaseApplication.app_title + " [" + BaseApplication.app_version + "] is connecting. ")
     return
 
   @BaseApplication.bot.event
-  async def on_disconnect():
+  async def on_disconnct():
     BaseApplication.print_b_text(BaseApplication.app_title + " is disconnecting.")
     return
 
